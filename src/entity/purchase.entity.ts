@@ -1,13 +1,7 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import { InMemoryDBEntity } from "@nestjs-addons/in-memory-db";
 
-@Entity()
-export class PurchaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column()
+export interface PurchaseEntity extends InMemoryDBEntity {
     title: string;
-
-    @Column()
     price: number;
+    comment?: string;
 }

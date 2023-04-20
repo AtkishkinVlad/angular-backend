@@ -1,13 +1,11 @@
 import {Module} from '@nestjs/common';
-import {TypeOrmModule} from '@nestjs/typeorm';
-import {PurchaseEntity} from '../entity/purchase.entity';
+
 import {PurchasesController} from './purchases.controller';
+import { InMemoryDBModule } from '@nestjs-addons/in-memory-db';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([
-        PurchaseEntity
-    ])],
-    controllers: [PurchasesController]
+    controllers: [PurchasesController],
+    imports: [InMemoryDBModule]
 })
 export class PurchasesModule {
 }
