@@ -18,8 +18,9 @@ export class PurchasesController {
     }
 
     @Put(':id')
-    update(@Body() dto: PurchaseEntity, @Param('id') id: string): void {
-        return this.purchaseService.update(dto);
+    update(@Body() dto: PurchaseEntity, @Param('id') id: string): PurchaseEntity {
+        this.purchaseService.delete(id);
+        return this.purchaseService.create(dto);
     }
 
     @Delete(':id')
