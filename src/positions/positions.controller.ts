@@ -1,19 +1,19 @@
-import {Controller, Get, Param} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {ILike, Repository} from 'typeorm';
-import {PositionEntity} from '../entity/position.entity';
+import {Controller, Get, Param, Post, Body} from '@nestjs/common';
+
+import { PositionEntity } from '../entity/position.entity';
+import { InMemoryDBService } from '@nestjs-addons/in-memory-db';
 
 @Controller('positions')
 export class PositionsController {
-    @InjectRepository(PositionEntity)
-    protected readonly entitiesRepository: Repository<PositionEntity>;
+    constructor (private readonly entitiesService: InMemoryDBService<PositionEntity>) {}
+
+    @Post()
+    create(@Body() dto: Partial<PositionEntity>): PositionEntity {
+        return this.entitiesService.create(dto);
+    }
 
     @Get(':search')
-    async search(@Param('search') search: string): Promise<PositionEntity[]> {
-        return this.entitiesRepository.find({
-            where: {
-                title: ILike(`%${search}%`)
-            }
-        });
+    search(@Param('search') search: string): PositionEntity[] {
+        return this.entitiesService.getAll();
     }
 }

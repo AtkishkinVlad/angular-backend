@@ -1,15 +1,10 @@
-import {Module} from '@nestjs/common';
-import {TypeOrmModule} from '@nestjs/typeorm';
-import {PositionEntity} from '../entity/position.entity';
-import {PositionsController} from './positions.controller';
+import { Module } from '@nestjs/common';
+
+import { PositionsController } from './positions.controller';
+import { InMemoryDBModule } from '@nestjs-addons/in-memory-db';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([
-            PositionEntity
-        ])
-    ],
-    controllers: [PositionsController]
+  controllers: [PositionsController],
+  imports: [InMemoryDBModule]
 })
-export class PositionsModule {
-}
+export class PositionsModule {}

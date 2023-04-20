@@ -1,25 +1,29 @@
-import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
+import { InMemoryDBService } from '@nestjs-addons/in-memory-db';
+
 import {PurchaseEntity} from '../entity/purchase.entity';
-import {InjectRepository} from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
 
 @Controller('purchases')
 export class PurchasesController {
-    @InjectRepository(PurchaseEntity)
-    protected readonly entitiesRepository: Repository<PurchaseEntity>;
+    constructor(private readonly purchaseService: InMemoryDBService<PurchaseEntity>) {}
 
     @Get()
-    async getAll(): Promise<PurchaseEntity[]> {
-        return this.entitiesRepository.find();
+    getAll(): PurchaseEntity[] {
+        return this.purchaseService.getAll();
     }
 
     @Post()
-    async create(@Body() dto: Partial<PurchaseEntity>): Promise<PurchaseEntity> {
-        return this.entitiesRepository.save(dto);
+    create(@Body() dto: Partial<PurchaseEntity>): PurchaseEntity {
+        return this.purchaseService.create(dto);
+    }
+
+    @Put(':id')
+    update(@Body() dto: PurchaseEntity, @Param('id') id: string): void {
+        return this.purchaseService.update(dto);
     }
 
     @Delete(':id')
-    async delete(@Param('id') id: string): Promise<void> {
-        await this.entitiesRepository.delete(id);
+    delete(@Param('id') id: string): void {
+        return this.purchaseService.delete(id);
     }
 }
