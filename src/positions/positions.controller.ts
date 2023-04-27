@@ -8,12 +8,8 @@ export class PositionsController {
     @InjectRepository(PositionEntity)
     protected readonly entitiesRepository: Repository<PositionEntity>;
 
-    @Get(':search')
-    async search(@Param('search') search: string): Promise<PositionEntity[]> {
-        return this.entitiesRepository.find({
-            where: {
-                title: ILike(`%${search}%`)
-            }
-        });
+    @Get()
+    async search(): Promise<PositionEntity[]> {
+        return this.entitiesRepository.find();
     }
 }
